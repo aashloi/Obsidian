@@ -4151,7 +4151,7 @@ do
         if Info.Searchable then
             SearchBox = New("TextBox", {
                 BackgroundTransparency = 1,
-                PlaceholderText = "搜索...",
+                PlaceholderText = "Search...",
                 Position = UDim2.fromOffset(-8, 0),
                 Size = UDim2.new(1, -12, 1, 0),
                 TextSize = 14,
@@ -5626,7 +5626,7 @@ function Library:CreateWindow(WindowInfo)
             Parent = SearchBox,
         })
 
-        local SearchIcon = Library:GetIcon("search")
+        local SearchIcon = Library:GetIcon("搜索")
         if SearchIcon then
             New("ImageLabel", {
                 Image = SearchIcon.Url,

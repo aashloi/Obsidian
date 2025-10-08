@@ -5604,7 +5604,7 @@ function Library:CreateWindow(WindowInfo)
 
         SearchBox = New("TextBox", {
             BackgroundColor3 = "MainColor",
-            PlaceholderText = "Search",
+            PlaceholderText = "搜索",
             Size = WindowInfo.SearchbarSize,
             TextScaled = true,
             Visible = not (WindowInfo.DisableSearch or false),
@@ -5626,7 +5626,7 @@ function Library:CreateWindow(WindowInfo)
             Parent = SearchBox,
         })
 
-        local SearchIcon = Library:GetIcon("搜索")
+        local SearchIcon = Library:GetIcon("search")
         if SearchIcon then
             New("ImageLabel", {
                 Image = SearchIcon.Url,

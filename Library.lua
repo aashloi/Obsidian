@@ -6690,7 +6690,7 @@ function Library:CreateWindow(WindowInfo)
 
         local LockButton = Library:AddDraggableButton("锁定", function(self)
             Library.CantDragForced = not Library.CantDragForced
-            self:SetText(Library.CantDragForced and "Unlock" or "Lock")
+            self:SetText(Library.CantDragForced and "解锁" or "锁定")
         end)
 
         if WindowInfo.MobileButtonsSide == "Right" then

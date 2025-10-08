@@ -7,7 +7,7 @@ local getassetfunc = getcustomasset or getsynasset
 local isfolder, isfile, listfiles = isfolder, isfile, listfiles
 
 if typeof(copyfunction) == "function" then
-    -- Fix is_____ functions for shitsploits, those functions should never error, only return a boolean.
+    -- 修复shitsploits的is_____函数，这些函数不应该报错，只应返回布尔值。
 
     local isfolder_copy, isfile_copy, listfiles_copy =
         copyfunction(isfolder), copyfunction(isfile), copyfunction(listfiles)
@@ -42,7 +42,7 @@ do
     ThemeManager.Library = nil
     ThemeManager.AppliedToTab = false
     ThemeManager.BuiltInThemes = {
-        ["Default"] = {
+        ["默认"] = {
             1,
             httpService:JSONDecode(
                 [[{"FontColor":"ffffff","MainColor":"191919","AccentColor":"7d55ff","BackgroundColor":"0f0f0f","OutlineColor":"282828"}]]
@@ -72,7 +72,7 @@ do
                 [[{"FontColor":"ffffff","MainColor":"242424","AccentColor":"3db488","BackgroundColor":"1c1c1c","OutlineColor":"373737"}]]
             ),
         },
-        ["Tokyo Night"] = {
+        ["东京之夜"] = {
             6,
             httpService:JSONDecode(
                 [[{"FontColor":"ffffff","MainColor":"191925","AccentColor":"6759b3","BackgroundColor":"16161f","OutlineColor":"323232"}]]
@@ -84,7 +84,7 @@ do
                 [[{"FontColor":"ffffff","MainColor":"3e3e3e","AccentColor":"e2581e","BackgroundColor":"323232","OutlineColor":"191919"}]]
             ),
         },
-        ["Quartz"] = {
+        ["石英"] = {
             8,
             httpService:JSONDecode(
                 [[{"FontColor":"ffffff","MainColor":"232330","AccentColor":"426e87","BackgroundColor":"1d1b26","OutlineColor":"27232f"}]]
@@ -96,7 +96,7 @@ do
                 [[{"FontColor":"eceff4","MainColor":"3b4252","AccentColor":"88c0d0","BackgroundColor":"2e3440","OutlineColor":"4c566a"}]]
             ),
         },
-        ["Dracula"] = {
+        ["德古拉"] = {
             10,
             httpService:JSONDecode(
                 [[{"FontColor":"f8f8f2","MainColor":"44475a","AccentColor":"ff79c6","BackgroundColor":"282a36","OutlineColor":"6272a4"}]]
@@ -132,7 +132,7 @@ do
                 [[{"FontColor":"abb2bf","MainColor":"282c34","AccentColor":"c678dd","BackgroundColor":"21252b","OutlineColor":"5c6370"}]]
             ),
         },
-        ["Cyberpunk"] = {
+        ["赛博朋克"] = {
             16,
             httpService:JSONDecode(
                 [[{"FontColor":"f9f9f9","MainColor":"262335","AccentColor":"00ff9f","BackgroundColor":"1a1a2e","OutlineColor":"413c5e"}]]
@@ -156,7 +156,7 @@ do
         self.Library = library
     end
 
-    --// Folders \\--
+    --// 文件夹 \\--
     function ThemeManager:GetPaths()
         local paths = {}
 
@@ -196,7 +196,7 @@ do
         self:BuildFolderTree()
     end
 
-    --// Apply, Update theme \\--
+    --// 应用, 更新主题 \\--
     function ThemeManager:ApplyTheme(theme)
         local customThemeData = self:GetCustomTheme(theme)
         local data = customThemeData or self.BuiltInThemes[theme]
@@ -238,7 +238,7 @@ do
         self.Library:UpdateColorsUsingRegistry()
     end
 
-    --// Get, Load, Save, Delete, Refresh \\--
+    --// 获取, 加载, 保存, 删除, 刷新 \\--
     function ThemeManager:GetCustomTheme(file)
         local path = self.Folder .. "/themes/" .. file .. ".json"
         if not isfile(path) then
@@ -256,7 +256,7 @@ do
     end
 
     function ThemeManager:LoadDefault()
-        local theme = "Default"
+        local theme = "默认"
         local content = isfile(self.Folder .. "/themes/default.txt") and readfile(self.Folder .. "/themes/default.txt")
 
         local isDefault = true
@@ -283,8 +283,8 @@ do
     end
 
     function ThemeManager:SetDefaultTheme(theme)
-        assert(self.Library, "Must set ThemeManager.Library first!")
-        assert(not self.AppliedToTab, "Cannot set default theme after applying ThemeManager to a tab!")
+        assert(self.Library, "必须先设置 ThemeManager.Library！")
+        assert(not self.AppliedToTab, "在将ThemeManager应用到选项卡后无法设置默认主题！")
 
         local FinalTheme = {}
         local LibraryScheme = {}
@@ -297,8 +297,8 @@ do
                 FinalTheme[field] = if theme[field]:sub(1, 1) == "#" then theme[field] else ("#" .. theme[field])
                 LibraryScheme[field] = Color3.fromHex(theme[field])
             else
-                FinalTheme[field] = ThemeManager.BuiltInThemes["Default"][2][field]
-                LibraryScheme[field] = Color3.fromHex(ThemeManager.BuiltInThemes["Default"][2][field])
+                FinalTheme[field] = ThemeManager.BuiltInThemes["默认"][2][field]
+                LibraryScheme[field] = Color3.fromHex(ThemeManager.BuiltInThemes["默认"][2][field])
             end
         end
 
@@ -318,14 +318,14 @@ do
         end
 
         self.Library.Scheme = LibraryScheme
-        self.BuiltInThemes["Default"] = { 1, FinalTheme }
+        self.BuiltInThemes["默认"] = { 1, FinalTheme }
 
         self.Library:UpdateColorsUsingRegistry()
     end
 
     function ThemeManager:SaveCustomTheme(file)
         if file:gsub(" ", "") == "" then
-            return self.Library:Notify("Invalid file name for theme (empty)", 3)
+            return self.Library:Notify("主题文件名无效(为空)", 3)
         end
 
         local theme = {}
@@ -341,17 +341,17 @@ do
 
     function ThemeManager:Delete(name)
         if not name then
-            return false, "no config file is selected"
+            return false, "未选择配置文件"
         end
 
         local file = self.Folder .. "/themes/" .. name .. ".json"
         if not isfile(file) then
-            return false, "invalid file"
+            return false, "无效文件"
         end
 
         local success = pcall(delfile, file)
         if not success then
-            return false, "delete file error"
+            return false, "删除文件错误"
         end
 
         return true
@@ -364,7 +364,7 @@ do
         for i = 1, #list do
             local file = list[i]
             if file:sub(-5) == ".json" then
-                -- i hate this but it has to be done ...
+                -- 必须这样做...
 
                 local pos = file:find(".json", 1, true)
                 local start = pos
@@ -384,19 +384,19 @@ do
         return out
     end
 
-    --// GUI \\--
+    --// 图形界面 \\--
     function ThemeManager:CreateThemeManager(groupbox)
         groupbox
-            :AddLabel("Background color")
+            :AddLabel("背景颜色")
             :AddColorPicker("BackgroundColor", { Default = self.Library.Scheme.BackgroundColor })
-        groupbox:AddLabel("Main color"):AddColorPicker("MainColor", { Default = self.Library.Scheme.MainColor })
-        groupbox:AddLabel("Accent color"):AddColorPicker("AccentColor", { Default = self.Library.Scheme.AccentColor })
+        groupbox:AddLabel("主颜色"):AddColorPicker("MainColor", { Default = self.Library.Scheme.MainColor })
+        groupbox:AddLabel("强调色"):AddColorPicker("AccentColor", { Default = self.Library.Scheme.AccentColor })
         groupbox
-            :AddLabel("Outline color")
+            :AddLabel("轮廓颜色")
             :AddColorPicker("OutlineColor", { Default = self.Library.Scheme.OutlineColor })
-        groupbox:AddLabel("Font color"):AddColorPicker("FontColor", { Default = self.Library.Scheme.FontColor })
+        groupbox:AddLabel("字体颜色"):AddColorPicker("FontColor", { Default = self.Library.Scheme.FontColor })
         groupbox:AddDropdown("FontFace", {
-            Text = "Font Face",
+            Text = "字体样式",
             Default = "Code",
             Values = { "BuilderSans", "Code", "Fantasy", "Gotham", "Jura", "Roboto", "RobotoMono", "SourceSans" },
         })
@@ -412,11 +412,11 @@ do
 
         groupbox:AddDivider()
 
-        groupbox:AddDropdown("ThemeManager_ThemeList", { Text = "Theme list", Values = ThemesArray, Default = 1 })
-        groupbox:AddButton("Set as default", function()
+        groupbox:AddDropdown("ThemeManager_ThemeList", { Text = "主题列表", Values = ThemesArray, Default = 1 })
+        groupbox:AddButton("设为默认", function()
             self:SaveDefault(self.Library.Options.ThemeManager_ThemeList.Value)
             self.Library:Notify(
-                string.format("Set default theme to %q", self.Library.Options.ThemeManager_ThemeList.Value)
+                string.format("已将默认主题设置为 %q", self.Library.Options.ThemeManager_ThemeList.Value)
             )
         end)
 
@@ -426,8 +426,8 @@ do
 
         groupbox:AddDivider()
 
-        groupbox:AddInput("ThemeManager_CustomThemeName", { Text = "Custom theme name" })
-        groupbox:AddButton("Create theme", function()
+        groupbox:AddInput("ThemeManager_CustomThemeName", { Text = "自定义主题名称" })
+        groupbox:AddButton("创建主题", function()
             self:SaveCustomTheme(self.Library.Options.ThemeManager_CustomThemeName.Value)
 
             self.Library.Options.ThemeManager_CustomThemeList:SetValues(self:ReloadCustomThemes())
@@ -438,54 +438,54 @@ do
 
         groupbox:AddDropdown(
             "ThemeManager_CustomThemeList",
-            { Text = "Custom themes", Values = self:ReloadCustomThemes(), AllowNull = true, Default = 1 }
+            { Text = "自定义主题", Values = self:ReloadCustomThemes(), AllowNull = true, Default = 1 }
         )
-        groupbox:AddButton("Load theme", function()
+        groupbox:AddButton("加载主题", function()
             local name = self.Library.Options.ThemeManager_CustomThemeList.Value
 
             self:ApplyTheme(name)
-            self.Library:Notify(string.format("Loaded theme %q", name))
+            self.Library:Notify(string.format("已加载主题 %q", name))
         end)
-        groupbox:AddButton("Overwrite theme", function()
+        groupbox:AddButton("覆盖主题", function()
             local name = self.Library.Options.ThemeManager_CustomThemeList.Value
 
             self:SaveCustomTheme(name)
-            self.Library:Notify(string.format("Overwrote config %q", name))
+            self.Library:Notify(string.format("已覆盖配置 %q", name))
         end)
-        groupbox:AddButton("Delete theme", function()
+        groupbox:AddButton("删除主题", function()
             local name = self.Library.Options.ThemeManager_CustomThemeList.Value
 
             local success, err = self:Delete(name)
             if not success then
-                return self.Library:Notify("Failed to delete theme: " .. err)
+                return self.Library:Notify("删除主题失败: " .. err)
             end
 
-            self.Library:Notify(string.format("Deleted theme %q", name))
+            self.Library:Notify(string.format("已删除主题 %q", name))
             self.Library.Options.ThemeManager_CustomThemeList:SetValues(self:ReloadCustomThemes())
             self.Library.Options.ThemeManager_CustomThemeList:SetValue(nil)
         end)
-        groupbox:AddButton("Refresh list", function()
+        groupbox:AddButton("刷新列表", function()
             self.Library.Options.ThemeManager_CustomThemeList:SetValues(self:ReloadCustomThemes())
             self.Library.Options.ThemeManager_CustomThemeList:SetValue(nil)
         end)
-        groupbox:AddButton("Set as default", function()
+        groupbox:AddButton("设为默认", function()
             if
                 self.Library.Options.ThemeManager_CustomThemeList.Value ~= nil
                 and self.Library.Options.ThemeManager_CustomThemeList.Value ~= ""
             then
                 self:SaveDefault(self.Library.Options.ThemeManager_CustomThemeList.Value)
                 self.Library:Notify(
-                    string.format("Set default theme to %q", self.Library.Options.ThemeManager_CustomThemeList.Value)
+                    string.format("已将默认主题设置为 %q", self.Library.Options.ThemeManager_CustomThemeList.Value)
                 )
             end
         end)
-        groupbox:AddButton("Reset default", function()
+        groupbox:AddButton("重置默认", function()
             local success = pcall(delfile, self.Folder .. "/themes/default.txt")
             if not success then
-                return self.Library:Notify("Failed to reset default: delete file error")
+                return self.Library:Notify("重置默认失败: 删除文件错误")
             end
 
-            self.Library:Notify("Set default theme to nothing")
+            self.Library:Notify("已将默认主题设置为无")
             self.Library.Options.ThemeManager_CustomThemeList:SetValues(self:ReloadCustomThemes())
             self.Library.Options.ThemeManager_CustomThemeList:SetValue(nil)
         end)
@@ -508,18 +508,18 @@ do
     end
 
     function ThemeManager:CreateGroupBox(tab)
-        assert(self.Library, "Must set ThemeManager.Library first!")
-        return tab:AddLeftGroupbox("Themes", "paintbrush")
+        assert(self.Library, "必须先设置 ThemeManager.Library！")
+        return tab:AddLeftGroupbox("主题管理", "paintbrush")
     end
 
     function ThemeManager:ApplyToTab(tab)
-        assert(self.Library, "Must set ThemeManager.Library first!")
+        assert(self.Library, "必须先设置 ThemeManager.Library！")
         local groupbox = self:CreateGroupBox(tab)
         self:CreateThemeManager(groupbox)
     end
 
     function ThemeManager:ApplyToGroupbox(groupbox)
-        assert(self.Library, "Must set ThemeManager.Library first!")
+        assert(self.Library, "必须先设置 ThemeManager.Library！")
         self:CreateThemeManager(groupbox)
     end
 
